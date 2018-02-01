@@ -6,7 +6,6 @@ def is_valid(my_dict):
     :param my_dict: input dictionary
     :return: boolean, True if valid, False if invalid
     """
-
     input_fields = ["x", "y"]
 
     # Iterate through fields e.g. 'x', and 'y'
