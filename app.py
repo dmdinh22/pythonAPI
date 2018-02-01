@@ -1,6 +1,6 @@
 from flask import Flask, request, Response, json, jsonify
 from validate_input import is_valid
-from werkzeug.exceptions import HTTPException
+from functools import wraps
  
 app = Flask(__name__)
  
@@ -25,19 +25,19 @@ def api_message():
             # return json object
             return json_data
 
-
 @app.errorhandler(Exception)
-# error handling class
-def handle_error(e):
-    code = 500
-    if isinstance(e, HTTPException):
-        code = e.code
-    # return json object with error
-    return jsonify(error=str(e)), code
+def get_http_exception_handler(app):
+    """Overrides the default http exception handler to return JSON."""
+    handle_http_exception = app.handle_http_exception
+    @wraps(handle_http_exception)
+    def ret_val(exception):
+        exc = handle_http_exception(exception)    
+        return jsonify({'code':exc.code, 'message':exc.description}), exc.code
+    return ret_val
 
+# Override the HTTP exception handler.
+app.handle_http_exception = get_http_exception_handler(app)
+    
 if __name__ == "__main__":
-    from werkzeug import HTTP_STATUS_CODES
-    for code in HTTP_STATUS_CODES:
-        app.register_error_handler(code, handle_error)
     #app.debug = True
     app.run()
