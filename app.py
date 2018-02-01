@@ -36,8 +36,8 @@ def handle_error(e):
     return jsonify(error=str(e)), code
 
 if __name__ == "__main__":
-    from werkzeug.exceptions import default_exceptions
-    for ex in default_exceptions:
-        app.register_error_handler(ex, handle_error)
+    from werkzeug import HTTP_STATUS_CODES
+    for code in HTTP_STATUS_CODES:
+        app.register_error_handler(code, handle_error)
     #app.debug = True
     app.run()
