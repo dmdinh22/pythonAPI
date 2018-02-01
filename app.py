@@ -2,6 +2,10 @@ from flask import Flask, request, Response, json, jsonify
  
 app = Flask(__name__)
  
+@app.route('/')
+def index():
+	return 'Hello World'
+
 @app.route("/test", methods = ["POST"])
 def api_message():
     try:
