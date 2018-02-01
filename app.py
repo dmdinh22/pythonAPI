@@ -27,7 +27,7 @@ def api_message():
 
 @app.errorhandler(Exception)
 def get_http_exception_handler(app):
-    """Overrides the default http exception handler to return JSON."""
+    #Overrides the default http exception handler to return JSON.
     handle_http_exception = app.handle_http_exception
     @wraps(handle_http_exception)
     def ret_val(exception):
